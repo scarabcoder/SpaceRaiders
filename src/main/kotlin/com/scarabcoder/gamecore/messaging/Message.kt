@@ -21,7 +21,15 @@ enum class Message(val msg: String, vararg val placeholders: String) {
 
     UNKNOWN_COMMAND("${ChatColor.RED}Command not found!"),
     TYPE_ARGUMENT_CAST_ERROR("${ChatColor.RED}Error with argument %a: %e", "a", "p"),
-    INVALID_USAGE("${ChatColor.RED}Invalid command usage. Usage: %p", "p");
+    INVALID_USAGE("${ChatColor.RED}Invalid command usage. Usage: %p", "p"),
+    IN_BATTLE_ERROR("${ChatColor.RED}You cannot teleport while in battle!"),
+    IN_SHIP_STATE_ERROR("${ChatColor.RED}You cannot use this command while %s", "s"),
+    TELEPORTING_TO("${ChatColor.GREEN}Teleporting to %l...", "l"),
+    NOT_IN_REQ_STATE("${ChatColor.RED}You must be %s to use this command!", "s"),
+    SHIP_BEING_EDITED("${ChatColor.RED}That ship is already being edited by %p", "p"),
+    CROUCH_AGAIN_TO_LEAVE("${ChatColor.GOLD}Press shift again to stop editing the ship."),
+    EDITING_PART("${ChatColor.AQUA}Editing part %p", "p");
+
 
     fun getConfigPath(): String {
         return this.name.toLowerCase().replace("_", "-")

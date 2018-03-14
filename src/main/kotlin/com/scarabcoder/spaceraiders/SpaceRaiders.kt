@@ -16,8 +16,9 @@
 package com.scarabcoder.spaceraiders
 
 import com.comphenix.protocol.ProtocolLibrary
-import com.scarabcoder.gamecore.commandapi.CommandRegistry
+import com.scarabcoder.commandapi2.CommandRegistry
 import com.scarabcoder.gamecore.sql.Connections
+import com.scarabcoder.input.InputManager
 import com.scarabcoder.spaceraiders.command.SpaceRaidersCommand
 import com.scarabcoder.spaceraiders.data.DataManager
 import org.bukkit.Bukkit
@@ -32,27 +33,27 @@ class SpaceRaiders : JavaPlugin(){
         config.options().copyDefaults(true)
         saveDefaultConfig()
 
-        SpaceRaiders.log = logger
 
-        val protocolManager = ProtocolLibrary.getProtocolManager()
 
-        CommandRegistry.registerCommand(SpaceRaidersCommand("spaceraiders"))
+        CommandRegistry.registerCommand(SpaceRaidersCommand())
+        InputManager.thisPlugin = this
 
         Connections.grabConnection().close()
         DataManager.createTables()
         DataManager.load()
 
+        registerValidators()
+
     }
 
+
+
     companion object {
+        val logger: Logger
+            get() = getPlugin().logger
+
         fun getPlugin(): Plugin {
             return Bukkit.getPluginManager().getPlugin("SpaceRaiders")
-        }
-
-        private var log: Logger? = null
-
-        fun getLogger():Logger {
-            return log!!
         }
     }
 

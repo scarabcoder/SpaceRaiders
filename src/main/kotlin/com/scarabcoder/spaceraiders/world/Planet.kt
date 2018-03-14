@@ -35,9 +35,8 @@ class Planet(val id: Int, val location: SpaceLocation, val expireTime: Long, val
 
     var world: World? = null
 
-    fun isLoaded(): Boolean{
-        return world != null
-    }
+    val isLoaded: Boolean
+        get() = world != null
 
     fun loadWorld(){
         val wc = WorldCreator("planet$id")
@@ -68,7 +67,6 @@ class Planet(val id: Int, val location: SpaceLocation, val expireTime: Long, val
             } finally {
                 c.close()
             }
-            throw SQLException("There was an error inserting a new planet into the database.")
         }
 
         fun createTable(): String {
