@@ -15,10 +15,16 @@
 
 package com.scarabcoder.spaceraiders.world
 
+import net.minecraft.server.v1_12_R1.WorldServer
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.WorldType
+import org.bukkit.craftbukkit.v1_12_R1.CraftChunk
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld
+import org.bukkit.event.EventHandler
+import org.bukkit.event.world.ChunkLoadEvent
 import sun.plugin.dom.exception.InvalidAccessException
 
 enum class DefaultWorlds(val worldName: String) {
@@ -40,6 +46,16 @@ enum class DefaultWorlds(val worldName: String) {
         val wc = WorldCreator(worldName)
         wc.type(WorldType.FLAT)
         wc.generatorSettings("2;0;1;")
+
         return wc.createWorld()
+    }
+
+    @EventHandler
+    fun chunkLoadEvent(e: ChunkLoadEvent) {
+        val clazz = CraftWorld::class.java
+        val f = clazz.getField("world")
+        f.isAccessible = true
+        val ws = f.get(e.world) as WorldServer
+       //ws.playerChunkMap.
     }
 }
