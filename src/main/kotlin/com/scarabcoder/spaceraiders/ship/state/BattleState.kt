@@ -15,10 +15,11 @@
 
 package com.scarabcoder.spaceraiders.ship.state
 
+import com.scarabcoder.spaceraiders.player.SRPlayer
 import com.scarabcoder.spaceraiders.ship.Ship
 
-class BattleState(ship: Ship, val enemy: Ship): ShipState(ship) {
-
+class BattleState(ship: Ship, val enemy: Ship, members: MutableList<SRPlayer>): ShipState(ship, members, "In Battle") {
+    override val stateType = Ship.State.BATTLE
 
 
 }

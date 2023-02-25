@@ -18,8 +18,33 @@ package com.scarabcoder.spaceraiders.ship.state
 import com.scarabcoder.spaceraiders.player.SRPlayer
 import com.scarabcoder.spaceraiders.ship.Ship
 
-open class ShipState(val ship: Ship) {
+abstract class ShipState(val ship: Ship, members: List<SRPlayer>, val readableName: String) {
 
-    val members: MutableList<SRPlayer> = ArrayList()
+
+    private val _members: MutableList<SRPlayer> = members.toMutableList()
+    init {
+        //Run the addMember() function for players this state have been initialized with, so that sub-states that override the function can handle players joining a state.
+        members.forEach { addMember(it) }
+    }
+
+    val members = _members as List<SRPlayer>
+
+    open fun addMember(player: SRPlayer) {
+        _members.add(player)
+    }
+    open fun removeMember(player: SRPlayer) {
+        _members.remove(player)
+    }
+
+    init {
+        members.forEach { it.preStateLocation = it.player.location }
+    }
+
+    abstract val stateType: Ship.State
+
+    open fun onSwitch() {
+        members.forEach { removeMember(it) }
+    }
+
 
 }

@@ -17,7 +17,6 @@ package com.scarabcoder.spaceraiders.ship
 
 import com.boydti.fawe.`object`.schematic.Schematic
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat
-import com.scarabcoder.gamecore.commandapi.Logger
 import com.scarabcoder.spaceraiders.SpaceRaiders
 import com.scarabcoder.spaceraiders.data.DataFolders
 import org.bukkit.configuration.InvalidConfigurationException
@@ -28,7 +27,7 @@ import java.io.FileNotFoundException
 import java.util.logging.Level
 import java.util.stream.Collectors
 
-data class Hull(val nameID: String, val displayName: String, val turretLocations: List<Vector>, val engineOne: Vector, val engineTwo: Vector){
+data class Hull(val nameID: String, val displayName: String, val turretLocations: List<Vector>, val engineOne: Vector, val engineTwo: Vector, val screen: Pair<Vector, Vector>, val chair: Vector){
 
     val schematic: Schematic = ClipboardFormat.SCHEMATIC.load(File(DataFolders.hulls, "${nameID}.schematic"))
 
@@ -61,7 +60,12 @@ data class Hull(val nameID: String, val displayName: String, val turretLocations
             fc.getStringList("turret-locations")
                     .map { it.split(",") }
                     .mapTo(turretLocations) { Vector(it[0].toInt(), it[1].toInt(), it[2].toInt()) }
-            return Hull(file.nameWithoutExtension, fc.getString("display-name"), turretLocations, fc.getVector("engine-one"), fc.getVector("engine-two"))
+            return Hull(file.nameWithoutExtension,
+                    fc.getString("display-name"),
+                    turretLocations,
+                    fc.getVector("engine-one"), fc.getVector("engine-two"),
+                    Pair(fc.getVector("screen-1"), fc.getVector("screen-2")),
+                    fc.getVector("chair"))
         }
 
         fun getDefault(size: Hangar.Size): Hull{

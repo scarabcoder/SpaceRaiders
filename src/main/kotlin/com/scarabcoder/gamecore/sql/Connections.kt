@@ -41,8 +41,6 @@ object Connections {
             hcf.minimumIdle = 3
             dataSource = HikariDataSource(hcf)
         }
-
-
     }
 
     fun grabConnection(): Connection {

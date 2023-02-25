@@ -15,10 +15,12 @@
 
 package com.scarabcoder.spaceraiders.ship.state
 
+import com.scarabcoder.spaceraiders.player.SRPlayer
 import com.scarabcoder.spaceraiders.ship.Ship
 import com.scarabcoder.spaceraiders.world.SpaceLocation
 
-class TravelState(ship: Ship, var location: SpaceLocation): ShipState(ship) {
+class TravelState(ship: Ship, var location: SpaceLocation, members: MutableList<SRPlayer>): ShipState(ship, members, "Traveling") {
+    override val stateType = Ship.State.TRAVEL
 
 
 

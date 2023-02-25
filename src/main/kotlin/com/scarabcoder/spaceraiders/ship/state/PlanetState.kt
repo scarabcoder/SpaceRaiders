@@ -15,7 +15,10 @@
 
 package com.scarabcoder.spaceraiders.ship.state
 
+import com.scarabcoder.spaceraiders.player.SRPlayer
 import com.scarabcoder.spaceraiders.ship.Ship
+import com.scarabcoder.spaceraiders.world.Planet
 
-class PlanetState(ship: Ship): ShipState(ship) {
+class PlanetState(ship: Ship, val planet: Planet, members: MutableList<SRPlayer>): ShipState(ship, members, "On Planet") {
+    override val stateType = Ship.State.PLANET
 }

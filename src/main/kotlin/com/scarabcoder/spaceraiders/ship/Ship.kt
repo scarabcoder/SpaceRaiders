@@ -16,9 +16,13 @@
 package com.scarabcoder.spaceraiders.ship
 
 import com.boydti.fawe.`object`.schematic.Schematic
+import com.scarabcoder.fawe
+import com.scarabcoder.iterate
+import com.scarabcoder.mergeWith
 import com.scarabcoder.spaceraiders.data.DataFolders
 import com.scarabcoder.spaceraiders.data.DataManager
 import com.scarabcoder.spaceraiders.ship.state.*
+import com.sk89q.worldedit.Vector
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.util.*
@@ -28,7 +32,7 @@ import kotlin.collections.HashMap
  * Created by owner on 1/5/2018.
  */
 
-class Ship(val id: Int, val hangar: Hangar, val size: Hangar.Size, val owner: UUID, var name: String?, val hull: Hull, val engine: Engine) {
+class Ship(val id: Int, val hangar: Hangar, val size: Hangar.Size, val owner: UUID, var name: String?, var hull: Hull, var engine: Engine) {
 
     val partData = File(DataFolders.ships, id.toString())
     val engineFolder = File(partData, "engine")
@@ -37,16 +41,19 @@ class Ship(val id: Int, val hangar: Hangar, val size: Hangar.Size, val owner: UU
     val engineData: HashMap<Engine, EngineData> = HashMap()
     val hullData: HashMap<Hull, HullData> = HashMap()
 
-    var state: ShipState = HangarState(this)
+    var state: ShipState = HangarState(this, Collections.emptyList())
+        set(value) {
+            field.onSwitch()
+            field = value
+        }
 
     val stateType: State
-    get() {
-        if(state is HangarState) return State.HANGAR
-        if(state is BattleState) return State.BATTLE
-        if(state is TravelState) return State.TRAVEL
-        if(state is PlanetState) return State.PLANET
-        throw IllegalStateException("The state was not set correctly!")
-    }
+        get() = state.stateType
+
+    val unlockedHulls: List<Hull>
+        get() = hullData.filter {it.value.unlocked}.map { it.key }
+    val unlockedEngines: List<Engine>
+        get() = engineData.filter {it.value.unlocked}.map { it.key }
 
 
     init {
@@ -81,9 +88,20 @@ class Ship(val id: Int, val hangar: Hangar, val size: Hangar.Size, val owner: UU
     }
 
 
-    fun buildSchematic(): Schematic? {
-        //TODO: Will build the hull along with both engines, using the connection points defined as vectors for each point
-        return null
+    fun buildSchematic(): Schematic {
+
+        val hullC = hull.schematic.clipboard!!
+        val engineC = engine.schematic.clipboard!!
+
+        var combine1 = hull.schematic.mergeWith(engine.schematic, hull.engineOne.fawe(), engine.hullLink.fawe())
+        val cclip = combine1.clipboard!!
+        val offset = cclip.origin.add(hull.engineTwo.fawe())
+        for(bPos in cclip.minimumPoint.iterate(cclip.maximumPoint)){
+            val b = cclip.getBlock(bPos)
+            cclip.setBlock(bPos.setX(cclip.maximumPoint.x - bPos.x), b)
+        }
+        combine1 = Schematic(cclip)
+        return combine1
     }
 
     fun savePartsData(){
@@ -148,4 +166,7 @@ class Ship(val id: Int, val hangar: Hangar, val size: Hangar.Size, val owner: UU
         HANGAR, TRAVEL, BATTLE, PLANET
     }
 
+    enum class PartType { HULL, ENGINE }
+
 }
+

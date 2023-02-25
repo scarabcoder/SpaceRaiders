@@ -18,24 +18,24 @@ package com.scarabcoder.spaceraiders.command
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer
-import com.scarabcoder.gamecore.commandapi.Command
-import com.scarabcoder.gamecore.commandapi.CommandSection
+import com.scarabcoder.commandapi2.Command
+import com.scarabcoder.commandapi2.CommandSection
 import org.bukkit.entity.Player
 import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntityLiving
 import net.minecraft.server.v1_12_R1.EntityArmorStand
 import com.scarabcoder.gamecore.sql.Connections
+import org.bukkit.command.CommandSender
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld
-
+import java.util.*
 
 
 /**
  * Created by owner on 1/3/2018.
  */
-class SpaceRaidersCommand(name: String): CommandSection(name) {
+class SpaceRaidersCommand: CommandSection("spaceraiders") {
 
-    override fun onCommand(player: Player) {
+    override val aliases: MutableList<String> = Arrays.asList("sr")
 
-    }
 
     @Command
     fun mytest(sender: Player){

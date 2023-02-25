@@ -21,6 +21,7 @@
 
     <groupId>com.scarabcoder</groupId>
     <artifactId>space-raiders</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
 
@@ -49,6 +50,10 @@
             <name>FastAsyncWorldEdit</name>
             <url>http://ci.athion.net/job/FastAsyncWorldEdit/ws/mvn/</url>
         </repository>
+        <repository>
+            <id>scarab-repo</id>
+            <url>https://mymavenrepo.com/repo/DSmbMenBusi4gORiPrHo/</url>
+        </repository>
 
         <repository>
             <id>sk89q-snapshots</id>
@@ -70,6 +75,23 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.scarabcoder</groupId>
+            <artifactId>input-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>0.22.5</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.scarabcoder</groupId>
+            <artifactId>command-api2</artifactId>
+            <version>1.1.6-SNAPSHOT</version>
+        </dependency>
 
         <!--Spigot API-->
         <dependency>
@@ -128,12 +150,6 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -223,6 +239,8 @@
                                     <include>org.jetbrains.kotlin</include>
                                     <include>com.zaxxer:HikariCP</include>
                                     <include>org.slf4j:slf4j-api</include>
+                                    <include>com.scarabcoder:command-api2:*</include>
+                                    <include>com.scarabcoder:input-api:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
